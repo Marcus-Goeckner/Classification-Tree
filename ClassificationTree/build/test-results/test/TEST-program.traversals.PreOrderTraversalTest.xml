@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="program.traversals.PreOrderTraversalTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2020-07-29T16:22:04" hostname="Alienware" time="0.002">
+  <properties/>
+  <testcase name="testSubTreeTraversal_2" classname="program.traversals.PreOrderTraversalTest" time="0.001"/>
+  <testcase name="testTraverse_2" classname="program.traversals.PreOrderTraversalTest" time="0.0"/>
+  <testcase name="testTraverse_3" classname="program.traversals.PreOrderTraversalTest" time="0.0"/>
+  <testcase name="testSubTreeTraversal" classname="program.traversals.PreOrderTraversalTest" time="0.001"/>
+  <testcase name="testSubtree_2" classname="program.traversals.PreOrderTraversalTest" time="0.0"/>
+  <testcase name="testSubtree_3" classname="program.traversals.PreOrderTraversalTest" time="0.0"/>
+  <testcase name="testTraverse" classname="program.traversals.PreOrderTraversalTest" time="0.0"/>
+  <testcase name="testSubtree" classname="program.traversals.PreOrderTraversalTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
