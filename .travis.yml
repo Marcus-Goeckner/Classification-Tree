@@ -1,8 +1,2 @@
 language: java
 install: skip
-
-before_install:
-- chmod +x gradlew
-
-script:
-  - ./gradlew build --scan -s
