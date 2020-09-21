@@ -1,6 +1,5 @@
 language: java
 install: skip
-os: Windows
 
 script:
   - ./gradlew build --scan -s
