@@ -1,5 +1,4 @@
 language: java
-jdk: oraclejdk12
 
 before_script: 
 - cd ClassificationTree
