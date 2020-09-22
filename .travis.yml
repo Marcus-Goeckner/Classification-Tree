@@ -2,5 +2,5 @@ language: java
 jdk: oraclejdk12
 
 before_script: 
-	- cd ClassificationTree
-	- chmod +x gradlew
+- cd ClassificationTree
+- chmod +x gradlew
