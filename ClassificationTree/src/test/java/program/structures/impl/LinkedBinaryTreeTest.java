@@ -217,7 +217,7 @@ public class LinkedBinaryTreeTest {
     public void testSize() {
         assertEquals(0, fixture.size());
         fixture.setRoot(0);
-        assertEquals(0, fixture.size());
+        assertEquals(1, fixture.size());
     }
 
     @Test

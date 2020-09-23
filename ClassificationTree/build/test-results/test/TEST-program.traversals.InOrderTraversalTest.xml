@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="program.traversals.InOrderTraversalTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2020-07-29T16:22:04" hostname="Alienware" time="0.003">
+<testsuite name="program.traversals.InOrderTraversalTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2020-09-23T00:20:38" hostname="Alienware" time="0.003">
   <properties/>
   <testcase name="testSubTreeTraversal_2" classname="program.traversals.InOrderTraversalTest" time="0.001"/>
   <testcase name="testTraverse_2" classname="program.traversals.InOrderTraversalTest" time="0.0"/>
@@ -7,7 +7,7 @@
   <testcase name="testSubTreeTraversal" classname="program.traversals.InOrderTraversalTest" time="0.001"/>
   <testcase name="testSubtree_2" classname="program.traversals.InOrderTraversalTest" time="0.0"/>
   <testcase name="testSubtree_3" classname="program.traversals.InOrderTraversalTest" time="0.0"/>
-  <testcase name="testTraverse" classname="program.traversals.InOrderTraversalTest" time="0.0"/>
+  <testcase name="testTraverse" classname="program.traversals.InOrderTraversalTest" time="0.001"/>
   <testcase name="testSubtree" classname="program.traversals.InOrderTraversalTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
