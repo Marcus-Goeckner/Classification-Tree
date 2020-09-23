@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BreadthFirstTraversal.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ClassificationTree</a> &gt; <a href="index.source.html" class="el_package">program.traversals</a> &gt; <span class="el_source">BreadthFirstTraversal.java</span></div><h1>BreadthFirstTraversal.java</h1><pre class="source lang-java linenums">package program.traversals;
+
+import program.structures.Node;
+import program.structures.Tree;
+import program.traversals.commands.TraversalCommand;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ * An implementation of the Iterative BreadthFirstSearch algorithm.
+ *
+ */
+public class BreadthFirstTraversal&lt;E&gt; extends AbstractTraversal&lt;E&gt; {
+
+    /**
+     * Constructs a new BreadthFirst Traversal for the given tree.
+     *
+     * @param tree The tree to traverse
+     */
+    public BreadthFirstTraversal(Tree&lt;E&gt; tree) {
+<span class="fc" id="L22">        super(tree);</span>
+<span class="fc" id="L23">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterable&lt;Node&lt;E&gt;&gt; traverse() {
+<span class="fc" id="L30">        Queue&lt;Node&lt;E&gt;&gt; q1 = new LinkedList&lt;&gt;();</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (!tree.isEmpty()) {</span>
+<span class="fc" id="L32">            Queue&lt;Node&lt;E&gt;&gt; q2 = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L33">            q2.offer(tree.root());</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">            while (!q2.isEmpty()) {</span>
+<span class="fc" id="L35">                Node&lt;E&gt; p = q2.poll();</span>
+<span class="fc" id="L36">                q1.add(p);</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">                for (Node&lt;E&gt; c : tree.children(p)) {</span>
+<span class="fc" id="L38">                    q2.offer(c);</span>
+<span class="fc" id="L39">                }</span>
+<span class="fc" id="L40">            }</span>
+        }
+<span class="fc" id="L42">        return q1;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterable&lt;Node&lt;E&gt;&gt; traverseFrom(Node start) {
+<span class="fc bfc" id="L50" title="All 2 branches covered.">       if (start == null) {</span>
+<span class="fc" id="L51">           throw new IllegalArgumentException(&quot;Start node cannot be null.&quot;);</span>
+       }
+<span class="fc" id="L53">        Queue&lt;Node&lt;E&gt;&gt; q1 = new LinkedList&lt;&gt;();</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (!tree.isEmpty()) {</span>
+<span class="fc" id="L55">            Queue&lt;Node&lt;E&gt;&gt; q2 = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L56">            q2.offer(start);</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">            while (!q2.isEmpty()) {</span>
+<span class="fc" id="L58">                Node&lt;E&gt; p = q2.poll();</span>
+<span class="fc" id="L59">                q1.add(p);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">                for (Node&lt;E&gt; c : tree.children(p)) {</span>
+<span class="fc" id="L61">                    q2.offer(c);</span>
+<span class="fc" id="L62">                }</span>
+<span class="fc" id="L63">            }</span>
+        }
+<span class="fc" id="L65">        return q1;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCommand(TraversalCommand cmd) {
+<span class="nc" id="L73">        this.command = cmd;</span>
+<span class="nc" id="L74">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

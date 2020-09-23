@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LinkedBinaryTree.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ClassificationTree</a> &gt; <a href="index.source.html" class="el_package">program.structures.impl</a> &gt; <span class="el_source">LinkedBinaryTree.java</span></div><h1>LinkedBinaryTree.java</h1><pre class="source lang-java linenums">package program.structures.impl;
+
+import program.structures.BinaryTree;
+import program.structures.Node;
+import program.structures.Tree;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * LinkedBinaryTree class to be used for classification tree
+ *
+ * @author Marcus Goeckner
+ * @param &lt;E&gt; Type of data to be contained in the tree
+ */
+<span class="fc" id="L16">public class LinkedBinaryTree&lt;E extends Comparable&gt; implements Tree&lt;E&gt;, BinaryTree&lt;E&gt; {</span>
+
+    protected BinaryTreeNode&lt;E&gt; root;
+<span class="fc" id="L19">    private int size = 0;</span>
+
+    /**
+     * Nested BinaryTreeNode class to be used for the nodes in LinkedBinaryTree.
+     *
+     * @author Marcus Goeckner
+     * @param &lt;E&gt; The type of the element to be contained in the node.
+     */
+    public static class BinaryTreeNode&lt;E extends Comparable&gt; implements Node&lt;E&gt; {
+
+        public E element;
+        private BinaryTreeNode&lt;E&gt; parent;
+        private BinaryTreeNode&lt;E&gt; right;
+        private BinaryTreeNode&lt;E&gt; left;
+
+<span class="fc" id="L34">        public BinaryTreeNode(E e, BinaryTreeNode&lt;E&gt; above, BinaryTreeNode&lt;E&gt; leftChild, BinaryTreeNode&lt;E&gt; rightChild) {</span>
+<span class="fc" id="L35">            element = e;</span>
+<span class="fc" id="L36">            parent = above;</span>
+<span class="fc" id="L37">            left = leftChild;</span>
+<span class="fc" id="L38">            right = rightChild;</span>
+<span class="fc" id="L39">        }</span>
+
+        /**
+         * @return The element contained in this node.
+         */
+        @Override
+        public E getElement() {
+<span class="fc" id="L46">            return element;</span>
+        }
+
+        /**
+         * @return The parent node of this class. Can be null.
+         */
+        @Override
+        public Node&lt;E&gt; getParent() {
+<span class="fc" id="L54">            return parent;</span>
+        }
+
+        /**
+         * @return The left child of this node.
+         */
+        public BinaryTreeNode&lt;E&gt; getLeft() {
+<span class="fc" id="L61">            return left;</span>
+        }
+
+        /**
+         * @return The right child of this node.
+         */
+        public BinaryTreeNode&lt;E&gt; getRight() {
+<span class="fc" id="L68">            return right;</span>
+        }
+
+        /**
+         * Sets the new value of this node to the provided one. Throws an
+         * IllegalArgumentException if the provided value is null.
+         *
+         * @param element New value to be contained in this node.
+         */
+        @Override
+        public void setElement(E element) throws IllegalArgumentException {
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">            if (element == null) {</span>
+<span class="nc" id="L80">                throw new IllegalArgumentException();</span>
+            } else {
+<span class="fc" id="L82">                this.element = element;</span>
+            }
+<span class="fc" id="L84">        }</span>
+
+        /**
+         * Sets the parent of this node.
+         *
+         * @param parentNode New parent of this node.
+         */
+        public void setParent(BinaryTreeNode&lt;E&gt; parentNode) {
+<span class="nc" id="L92">            parent = parentNode;</span>
+<span class="nc" id="L93">        }</span>
+
+        /**
+         * Sets the left child of this node.
+         *
+         * @param leftChild New left child of this node.
+         */
+        public void setLeft(BinaryTreeNode&lt;E&gt; leftChild) {
+<span class="fc" id="L101">            left = leftChild;</span>
+<span class="fc" id="L102">        }</span>
+
+        /**
+         * Sets the right child of this node.
+         *
+         * @param rightChild New right child of this node.
+         */
+        public void setRight(BinaryTreeNode&lt;E&gt; rightChild) {
+<span class="fc" id="L110">            right = rightChild;</span>
+<span class="fc" id="L111">        }</span>
+    }
+
+    public BinaryTreeNode&lt;E&gt; createNode(E element, BinaryTreeNode&lt;E&gt; parent, BinaryTreeNode&lt;E&gt; left,
+                                        BinaryTreeNode&lt;E&gt; right) {
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (element == null) {</span>
+<span class="fc" id="L117">            throw new IllegalArgumentException(&quot;Cannot create a node with null elements&quot;);</span>
+        }
+<span class="fc" id="L119">        return new BinaryTreeNode&lt;&gt;(element, parent, left, right);</span>
+    }
+
+    /**
+     * Returns the left child of the provided node.
+     *
+     * @param p The parent node of whom the left child is desired.
+     * @return The left child of the provided node, can be null if no such child
+     * exists.
+     * @throws IllegalArgumentException If the provided node is invalid.
+     */
+    @Override
+    public Node&lt;E&gt; left(Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="fc" id="L132">        BinaryTreeNode&lt;E&gt; node = validate(p);</span>
+<span class="fc" id="L133">        return node.getLeft();</span>
+    }
+
+    /**
+     * Returns the right child of the provided node.
+     *
+     * @param p The parent node of whom the right child is desired.
+     * @return The right child of the provided node, can be null if no such
+     * child exists.
+     * @throws IllegalArgumentException If the provided node is invalid.
+     */
+    @Override
+    public Node&lt;E&gt; right(Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="fc" id="L146">        BinaryTreeNode&lt;E&gt; node = validate(p);</span>
+<span class="fc" id="L147">        return node.getRight();</span>
+    }
+
+    /**
+     * Returns the sibling node of the provided node, if such a sibling exists.
+     * That is, if the right node is provided the left node will be returned
+     * from the same parent.
+     *
+     * @param p The node of whom a sibling is requested.
+     * @return The sibling of the provided node, or null if no such sibling
+     * exists.
+     * @throws IllegalArgumentException If the provided node is invalid.
+     */
+    @Override
+    public Node&lt;E&gt; sibling(Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="nc" id="L162">        BinaryTreeNode&lt;E&gt; node = validate(p);</span>
+<span class="nc" id="L163">        Node&lt;E&gt; parent = parent(node);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (parent == null) {</span>
+<span class="nc" id="L165">            return null;</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        } else if (node == left(parent)) {</span>
+<span class="nc" id="L167">            return right(parent);</span>
+        } else {
+<span class="nc" id="L169">            return left(parent);</span>
+        }
+    }
+
+    /**
+     * Adds the provided element as a new node to the left side of the provided
+     * node.
+     *
+     * @param p       The node to which the element is to be added as the left child.
+     * @param element Element to be added
+     * @return The newly created left child of the provided node
+     * @throws IllegalArgumentException If the provided node is invalid, if the
+     *                                  provided element is null, or if the provided node already has a left
+     *                                  child.
+     */
+    @Override
+    public Node&lt;E&gt; addLeft(Node&lt;E&gt; p, E element) throws IllegalArgumentException {
+<span class="fc" id="L186">        BinaryTreeNode&lt;E&gt; parent = validate(p);</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">        if (parent.getLeft() != null) {</span>
+<span class="nc" id="L188">            throw new IllegalArgumentException(&quot;Node already has a left child.&quot;);</span>
+        }
+<span class="fc" id="L190">        BinaryTreeNode&lt;E&gt; child = createNode(element, parent, null, null);</span>
+<span class="fc" id="L191">        parent.setLeft(child);</span>
+<span class="fc" id="L192">        size++;</span>
+<span class="fc" id="L193">        return child;</span>
+    }
+
+    /**
+     * Adds the provided element as a new node to the right side of the provided
+     * node.
+     *
+     * @param p       The node to which the element is to be added as the right child.
+     * @param element Element to be added
+     * @return The newly created right child of the provided node
+     * @throws IllegalArgumentException If the provided node is invalid, if the
+     *                                  provided element is null, or if the provided node already has a right
+     *                                  child.
+     */
+    @Override
+    public Node&lt;E&gt; addRight(Node&lt;E&gt; p, E element) throws IllegalArgumentException {
+<span class="fc" id="L209">        BinaryTreeNode&lt;E&gt; parent = validate(p);</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">        if (parent.getRight() != null) {</span>
+<span class="nc" id="L211">            throw new IllegalArgumentException(&quot;Node already has a right child.&quot;);</span>
+        }
+<span class="fc" id="L213">        BinaryTreeNode&lt;E&gt; child = createNode(element, parent, null, null);</span>
+<span class="fc" id="L214">        parent.setRight(child);</span>
+<span class="fc" id="L215">        size++;</span>
+<span class="fc" id="L216">        return child;</span>
+    }
+
+    /**
+     * @return The root node of this tree or null if the Tree is empty.
+     */
+    @Override
+    public Node&lt;E&gt; root() {
+<span class="fc" id="L224">        BinaryTreeNode&lt;E&gt; r = root;</span>
+<span class="fc" id="L225">        return r;</span>
+    }
+
+    /**
+     * Sets the tree's root node to the provided item, by creating a new node
+     * (unless the given item is the same as the current root's item). Note that
+     * this must also reset the size of the tree to the correct value if the
+     * current node is replaced.
+     *
+     * @param item New item for the root node.
+     * @return The new root node.
+     */
+    @Override
+    public Node&lt;E&gt; setRoot(E item) {
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        if (item == null) {</span>
+<span class="fc" id="L240">            root = null;</span>
+<span class="fc" id="L241">            size = 0;</span>
+<span class="fc" id="L242">            return null;</span>
+        } else {
+<span class="fc" id="L244">            BinaryTreeNode&lt;E&gt; newRoot = createNode(item, null, null, null);</span>
+<span class="fc" id="L245">            root = newRoot;</span>
+<span class="fc" id="L246">            size = 1;</span>
+<span class="fc" id="L247">            return newRoot;</span>
+        }
+
+    }
+
+    /**
+     * Returns the parent node of the node provided, or null if the node is also
+     * the root of the tree.
+     *
+     * @param p Node whose parent is being requested.
+     * @return The parent of the provided node, or null if the provided node is
+     * the root.
+     * @throws IllegalArgumentException If the node is invalid
+     */
+    @Override
+    public Node&lt;E&gt; parent(Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="fc" id="L263">        BinaryTreeNode&lt;E&gt; node = validate(p);</span>
+<span class="fc" id="L264">        return node.getParent();</span>
+    }
+
+    /**
+     * Returns an iterable collection of the children attached to the provided
+     * node.
+     *
+     * @param p The node whose children are requested.
+     * @return An iterable collection of the children attached to the provided
+     * node.
+     * @throws IllegalArgumentException If the provided node is invalid
+     */
+    @Override
+    public Iterable&lt;Node&lt;E&gt;&gt; children(Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="fc" id="L278">        BinaryTreeNode&lt;E&gt; node = validate(p);</span>
+<span class="fc" id="L279">        List&lt;Node&lt;E&gt;&gt; children = new ArrayList&lt;&gt;(2);</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">        if (left(p) != null) {</span>
+<span class="fc" id="L281">            children.add(left(p));</span>
+        }
+<span class="fc bfc" id="L283" title="All 2 branches covered.">        if (right(p) != null) {</span>
+<span class="fc" id="L284">            children.add(right(p));</span>
+        }
+<span class="fc" id="L286">        return children;</span>
+
+    }
+
+    /**
+     * Returns the number of children currently attached to the provided node.
+     *
+     * @param p Node whose number of children is requested.
+     * @return The number of children attached to the provided node.
+     * @throws IllegalArgumentException If the node is invalid.
+     */
+    @Override
+    public int numChildren(Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="fc" id="L299">        BinaryTreeNode&lt;E&gt; node = validate(p);</span>
+<span class="fc" id="L300">        int count = 0;</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">        if (left(p) != null) {</span>
+<span class="fc" id="L302">            count++;</span>
+        }
+<span class="pc bpc" id="L304" title="1 of 2 branches missed.">        if (right(p) != null) {</span>
+<span class="fc" id="L305">            count++;</span>
+        }
+<span class="fc" id="L307">        return count;</span>
+    }
+
+    /**
+     * Tests whether the node is an internal node or not. That is whether the
+     * node has children.
+     *
+     * @param p The node to test.
+     * @return True if the node is an internal node, false otherwise.
+     * @throws IllegalArgumentException If the node is invalid.
+     */
+    @Override
+    public boolean isInternal(Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="nc" id="L320">        BinaryTreeNode&lt;E&gt; node = validate(p);</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">        return numChildren(p) &gt; 0;</span>
+    }
+
+    /**
+     * Tests whether the node is an external node of the tree. That is whether
+     * the node has no children and thus is a leaf of the tree.
+     *
+     * @param p The node to test.
+     * @return True if the node is a leaf node, false otherwise.
+     * @throws IllegalArgumentException If the node is invalid
+     */
+    @Override
+    public boolean isExternal(Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="nc" id="L334">        BinaryTreeNode&lt;E&gt; node = validate(p);</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">        return numChildren(p) == 0;</span>
+    }
+
+    /**
+     * Tests whether this node is the root node of the tree. That is that the
+     * provided node has children but not parent.
+     *
+     * @param p Node to test.
+     * @return True if the node is the root of the tree.
+     * @throws IllegalArgumentException If the provided node is invalid.
+     */
+    @Override
+    public boolean isRoot(Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="fc bfc" id="L348" title="All 2 branches covered.">        return p == root();</span>
+    }
+
+    /**
+     * Inserts the item into the tree under the provided node. If the provided
+     * node is null the item becomes the new root of the tree, beware.
+     *
+     * @param item Item to be inserted into the tree.
+     * @param p    The parent node of the tree, if null the item becomes the new
+     *             root so be aware.
+     * @return True if the item was able to be inserted, false otherwise (for
+     * example the item was null)
+     * @throws IllegalArgumentException if the provided parent node is invalid,
+     *                                  or the provided value is null.
+     */
+    @Override
+    public Node&lt;E&gt; insert(E item, Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="fc bfc" id="L365" title="All 2 branches covered.">        if (p == null) {</span>
+<span class="fc" id="L366">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L368">        BinaryTreeNode&lt;E&gt; node =  validate(p);</span>
+<span class="fc" id="L369">        Node child = null;</span>
+<span class="fc bfc" id="L370" title="All 4 branches covered.">        if (node.getRight() != null &amp;&amp; node.getLeft() != null) {</span>
+<span class="fc" id="L371">            throw new IllegalArgumentException(&quot;Node has two children&quot;);</span>
+        }
+<span class="pc bpc" id="L373" title="1 of 4 branches missed.">        if (item == null || item == p.getElement()) {</span>
+<span class="fc" id="L374">            throw new IllegalArgumentException(&quot;Item invalid.&quot;);</span>
+<span class="fc bfc" id="L375" title="All 4 branches covered.">        } else if (node.getLeft() == null &amp;&amp; node.getRight() == null) {</span>
+<span class="fc" id="L376">            child = addLeft(node, item);</span>
+<span class="pc bpc" id="L377" title="1 of 4 branches missed.">        } else if (node.getLeft() != null &amp;&amp; node.getRight() == null) {</span>
+<span class="fc" id="L378">            child = addRight(node, item);</span>
+        }
+<span class="fc" id="L380">        size++;</span>
+<span class="fc" id="L381">        return child;</span>
+    }
+
+    /**
+     * Removes the given item from the provided parent node.
+     *
+     * @param item Item to be removed from the list of children of the provided
+     *             node.
+     * @param p    Parent node.
+     * @return true if the item was removed, false otherwise.
+     * @throws IllegalArgumentException If the provided parent node is not valid
+     *                                  or the value is null.
+     */
+    @Override
+    public boolean remove(E item, Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="fc bfc" id="L396" title="All 2 branches covered.">        if (item == null) {</span>
+<span class="fc" id="L397">            return false;</span>
+<span class="fc bfc" id="L398" title="All 2 branches covered.">        } else if (p == null) {</span>
+<span class="fc" id="L399">            return false;</span>
+        }
+<span class="fc" id="L401">        BinaryTreeNode node = (BinaryTreeNode)p;</span>
+        try {
+<span class="fc bfc" id="L403" title="All 2 branches covered.">            if (item.compareTo(node.getElement()) &lt; 0) {</span>
+<span class="fc bfc" id="L404" title="All 2 branches covered.">                if (node.getLeft().getElement() == item) {</span>
+<span class="pc bpc" id="L405" title="1 of 4 branches missed.">                    if (node.getLeft().getLeft() == null || node.getLeft().getRight() == null) {</span>
+<span class="fc" id="L406">                        BinaryTreeNode removedNode = node.getLeft();</span>
+<span class="fc" id="L407">                        node.setLeft(node.getLeft().getRight());</span>
+<span class="fc" id="L408">                        size--;</span>
+<span class="fc" id="L409">                        return true;</span>
+                    }
+                }
+<span class="fc" id="L412">                return remove(item, node.getLeft());</span>
+            }
+<span class="fc bfc" id="L414" title="All 2 branches covered.">            if (item.compareTo(node.getElement()) &gt; 0) {</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">                if (node.getRight().getElement() == item) {</span>
+<span class="pc bpc" id="L416" title="3 of 4 branches missed.">                    if (node.getRight().getRight() == null || node.getRight().getLeft() == null) {</span>
+<span class="fc" id="L417">                        node.setRight(node.getRight().getLeft());</span>
+<span class="fc" id="L418">                        size--;</span>
+<span class="fc" id="L419">                        return true;</span>
+                    }
+                }
+<span class="nc" id="L422">                return remove(item, node.getRight());</span>
+            }
+<span class="pc bpc" id="L424" title="1 of 2 branches missed.">            if (item.compareTo(node.getElement()) == 0) {</span>
+<span class="pc bpc" id="L425" title="3 of 4 branches missed.">                if (node.getLeft() == null &amp;&amp; node.getRight() == null) {</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">                    if (node == root()) {</span>
+<span class="nc" id="L427">                        setRoot(null);</span>
+                    }
+<span class="nc" id="L429">                    return true;</span>
+<span class="pc bpc" id="L430" title="2 of 4 branches missed.">                } else if (node.getLeft() != null &amp;&amp; node.getRight() != null) {</span>
+<span class="fc" id="L431">                    BinaryTreeNode temp = node;</span>
+<span class="fc" id="L432">                    E min = (E) minValue(temp.getRight()).getElement();</span>
+<span class="fc" id="L433">                    node.setElement(min);</span>
+<span class="fc" id="L434">                    removeMin(node.getRight());</span>
+<span class="fc" id="L435">                    return true;</span>
+                }
+            }
+<span class="nc" id="L438">            return false;</span>
+<span class="fc" id="L439">        } catch (Exception e) {</span>
+<span class="fc" id="L440">            throw new IllegalArgumentException();</span>
+        }
+    }
+
+    /**
+     * Function to be used to remove the min value of items in a tree with root p.
+     *
+     * @param p Parent node.
+     */
+    public void removeMin(Node&lt;E&gt; p) {
+<span class="fc" id="L450">        BinaryTreeNode&lt;E&gt; node = validate(p);</span>
+<span class="pc bpc" id="L451" title="1 of 2 branches missed.">        if (node.getLeft() == null) {</span>
+<span class="fc" id="L452">            setRoot(null);</span>
+        } else {
+<span class="nc" id="L454">            removeMin(node.getLeft());</span>
+        }
+<span class="fc" id="L456">    }</span>
+
+    /**
+     * Finds the minimum value in a tree.
+     *
+     * @param p Parent node.
+     * @return Minimum value in a tree with root p.
+     */
+    public Node&lt;E&gt; minValue(Node&lt;E&gt; p) {
+<span class="fc" id="L465">        BinaryTreeNode node = validate(p);</span>
+<span class="pc bpc" id="L466" title="1 of 2 branches missed.">        if (node.getLeft() == null) {</span>
+<span class="fc" id="L467">            return node;</span>
+        } else {
+<span class="nc" id="L469">            return minValue(node.getLeft());</span>
+        }
+    }
+
+    /**
+     * @return The number of nodes currently in the tree.
+     */
+    @Override
+    public int size() {
+<span class="fc" id="L478">        return size;</span>
+    }
+
+    /**
+     * @return true if the tree contains no nodes (that is the root = null),
+     * false otherwise.
+     */
+    @Override
+    public boolean isEmpty() {
+<span class="fc bfc" id="L487" title="All 2 branches covered.">        return root() == null;</span>
+    }
+
+    /**
+     * Updates the value of the node to the provided value. Throws an
+     * IllegalArgumentException if the value is null, the node is null, or the
+     * node is not in this Tree.
+     *
+     * @param node    Node whose value is to be updated.
+     * @param element New value for the node.
+     * @throws IllegalArgumentException If the provided node is invalid, or the
+     *                                  element value is null.
+     */
+    @Override
+    public E set(Node&lt;E&gt; node, E element) throws IllegalArgumentException {
+<span class="fc" id="L502">       BinaryTreeNode n = validate(node);</span>
+<span class="fc bfc" id="L503" title="All 2 branches covered.">       if (element == null) {</span>
+<span class="fc" id="L504">           throw new IllegalArgumentException(&quot;Element cannot be null&quot;);</span>
+       } else {
+<span class="fc" id="L506">           node.setElement(element);</span>
+<span class="fc" id="L507">           return element;</span>
+       }
+    }
+
+    /**
+     * Validates that the provided node is not null, is of a subtype of Node
+     * supported by the implementing tree class, and is currently in this tree.
+     * If these conditions are not met then an IllegalArgumentException is
+     * thrown.
+     *
+     * @param p The node to be validated.
+     * @return A node of the expected type specific to the implementing tree.
+     * @throws IllegalArgumentException Thrown if the provided node is null, not
+     *                                  in the current tree, or is not of a type supported by the current tree.
+     */
+    @Override
+    public BinaryTreeNode&lt;E&gt; validate(Node&lt;E&gt; p) throws IllegalArgumentException {
+<span class="fc bfc" id="L524" title="All 2 branches covered.">        if ((!(p instanceof BinaryTreeNode))) {</span>
+<span class="fc" id="L525">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L527">        BinaryTreeNode&lt;E&gt; node = (BinaryTreeNode&lt;E&gt;) p;</span>
+<span class="fc bfc" id="L528" title="All 4 branches covered.">        if (node.getParent() == null &amp;&amp; !isRoot(node)) {</span>
+<span class="fc" id="L529">            throw new IllegalArgumentException(&quot;Provided node is not in the tree.&quot;);</span>
+        }
+<span class="fc" id="L531">        return node;</span>
+    }
+
+    /**
+     * Calculates the depth of the given node in the current tree.
+     *
+     * @param node Node whose depth is to be calculated
+     * @return Depth of the node in the tree.
+     * @throws IllegalArgumentException If the provided node is invalid
+     */
+    @Override
+    public int depth(Node&lt;E&gt; node) throws IllegalArgumentException {
+<span class="nc" id="L543">        BinaryTreeNode&lt;E&gt; n = validate(node);</span>
+<span class="nc bnc" id="L544" title="All 2 branches missed.">        if (isRoot(n)) {</span>
+<span class="nc" id="L545">            return 0;</span>
+        } else {
+<span class="nc" id="L547">            return 1 + depth(parent(n));</span>
+        }
+    }
+
+    /**
+     * Recusively calculates the size of a subtree rooted at the provided node.
+     *
+     * @param node Node whose subtree size is to be calculated
+     * @return Size of the subtree (excluding the root)
+     * @throws IllegalArgumentException If the provided node is invalid.
+     */
+    @Override
+    public int subTreeSize(Node&lt;E&gt; node) throws IllegalArgumentException {
+<span class="nc" id="L560">        BinaryTreeNode n = validate(node);</span>
+<span class="nc" id="L561">        return (subTreeSize(n.getLeft()) + 1 + subTreeSize(n.getRight()));</span>
+    }
+
+    /**
+     * Checks if the provided node is the last child of it's parent node. Note
+     * that the root node always returns true.
+     *
+     * @param node Node to check.
+     * @return True if the node is the last child of it's parent node or is the
+     * root, false otherwise.
+     * @throws IllegalArgumentException If the provided node is not valid.
+     */
+    @Override
+    public boolean isLastChild(Node&lt;E&gt; node) throws IllegalArgumentException {
+<span class="nc" id="L575">        BinaryTreeNode n = validate(node);</span>
+<span class="nc bnc" id="L576" title="All 2 branches missed.">        if (n == root) {</span>
+<span class="nc" id="L577">            return true;</span>
+        } else {
+<span class="nc bnc" id="L579" title="All 4 branches missed.">            if (n.getRight() == null &amp;&amp; n.getLeft() == null) {</span>
+<span class="nc" id="L580">                return true;</span>
+            } else {
+<span class="nc" id="L582">                return false;</span>
+            }
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

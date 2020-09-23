@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InOrderTraversal.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ClassificationTree</a> &gt; <a href="index.source.html" class="el_package">program.traversals</a> &gt; <span class="el_source">InOrderTraversal.java</span></div><h1>InOrderTraversal.java</h1><pre class="source lang-java linenums">package program.traversals;
+
+import program.structures.Node;
+import program.structures.Tree;
+import program.structures.impl.LinkedBinaryTree;
+
+import java.util.List;
+
+/**
+ * A recursive implementation of the inorder tree traversal algorithm.
+ *
+ * @param &lt;E&gt; The type of data in the tree to be traversed
+ */
+public class InOrderTraversal&lt;E extends Comparable&gt; extends DepthFirstTraversal&lt;E&gt; {
+
+    /**
+     * Constructs a new InOrder tree traversal for the given tree.
+     *
+     * @param tree Tree to be traversed.
+     */
+    public InOrderTraversal(Tree&lt;E&gt; tree) {
+<span class="fc" id="L22">        super(tree);</span>
+<span class="fc" id="L23">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void subtree(Node&lt;E&gt; p, List&lt;Node&lt;E&gt;&gt; snapshot) {
+<span class="fc bfc" id="L30" title="All 4 branches covered.">        if (p == null || snapshot == null) {</span>
+<span class="fc" id="L31">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L33">        LinkedBinaryTree.BinaryTreeNode&lt;E&gt; node = (LinkedBinaryTree.BinaryTreeNode&lt;E&gt;) tree.validate(p);</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (node.getLeft() != null) {</span>
+<span class="fc" id="L35">            subtree(node.getLeft(), snapshot);</span>
+        }
+<span class="fc" id="L37">        snapshot.add(node);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (node.getRight() != null) {</span>
+<span class="fc" id="L39">            subtree(node.getRight(), snapshot);</span>
+        }
+<span class="fc" id="L41">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
