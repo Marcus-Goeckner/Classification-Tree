@@ -275,7 +275,7 @@ public class LinkedBinaryTree<E extends Comparable> implements Tree<E>, BinaryTr
      */
     @Override
     public Iterable<Node<E>> children(Node<E> p) throws IllegalArgumentException {
-        BinaryTreeNode<E> node = validate(p);
+        validate(p);
         List<Node<E>> children = new ArrayList<>(2);
         if (left(p) != null) {
             children.add(left(p));
@@ -317,7 +317,7 @@ public class LinkedBinaryTree<E extends Comparable> implements Tree<E>, BinaryTr
      */
     @Override
     public boolean isInternal(Node<E> p) throws IllegalArgumentException {
-        BinaryTreeNode<E> node = validate(p);
+        validate(p);
         return numChildren(p) > 0;
     }
 
@@ -331,7 +331,7 @@ public class LinkedBinaryTree<E extends Comparable> implements Tree<E>, BinaryTr
      */
     @Override
     public boolean isExternal(Node<E> p) throws IllegalArgumentException {
-        BinaryTreeNode<E> node = validate(p);
+        validate(p);
         return numChildren(p) == 0;
     }
 
@@ -393,9 +393,7 @@ public class LinkedBinaryTree<E extends Comparable> implements Tree<E>, BinaryTr
      */
     @Override
     public boolean remove(E item, Node<E> p) throws IllegalArgumentException {
-        if (item == null) {
-            return false;
-        } else if (p == null) {
+        if (item == null || p == null) {
             return false;
         }
         BinaryTreeNode node = (BinaryTreeNode)p;
@@ -403,7 +401,6 @@ public class LinkedBinaryTree<E extends Comparable> implements Tree<E>, BinaryTr
             if (item.compareTo(node.getElement()) < 0) {
                 if (node.getLeft().getElement() == item) {
                     if (node.getLeft().getLeft() == null || node.getLeft().getRight() == null) {
-                        BinaryTreeNode removedNode = node.getLeft();
                         node.setLeft(node.getLeft().getRight());
                         size--;
                         return true;
@@ -576,11 +573,7 @@ public class LinkedBinaryTree<E extends Comparable> implements Tree<E>, BinaryTr
         if (n == root) {
             return true;
         } else {
-            if (n.getRight() == null && n.getLeft() == null) {
-                return true;
-            } else {
-                return false;
-            }
+            return n.getRight() == null && n.getLeft() == null;
         }
     }
 }

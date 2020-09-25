@@ -27,7 +27,7 @@ public class ClassificationTree {
      */
     public ClassificationTree(String fileName) throws IOException {
         tree = new LinkedBinaryTree<>();
-        load(fileName);
+        tryLoad(fileName);
     }
 
     /**
@@ -120,56 +120,54 @@ public class ClassificationTree {
     }
 
     /**
-     * Loads a tree from the given file, if an exception occurs during file
-     * operations, a hardcoded basic tree will be loaded instead.
+     * Loads a tree from a file with a specified name
+     *
+     * @param fileName name of the file to load
+     * @throws IOException
      */
     public void load(String fileName) throws IOException {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            String line;
-            Queue<Datum> datums = new LinkedList<>();
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        String line;
+        Queue<Datum> datums = new LinkedList<>();
 
-            while((line = reader.readLine()) != null) {
-                String[] arr = line.split(":");
-                int datumNum = Integer.parseInt(arr[1]);
-                String prompt = arr[3];
-                Datum datum = new Datum(prompt, datumNum);
-                datum.setSide(arr[2]);
-                datums.offer(datum);
+        while ((line = reader.readLine()) != null) {
+            String[] arr = line.split(":");
+            int datumNum = Integer.parseInt(arr[1]);
+            String prompt = arr[3];
+            Datum datum = new Datum(prompt, datumNum);
+            datum.setSide(arr[2]);
+            datums.offer(datum);
+        }
+        while (!datums.isEmpty()) {
+            LinkedBinaryTree.BinaryTreeNode p = null;
+            if (tree.isEmpty()) {
+                p = (LinkedBinaryTree.BinaryTreeNode) tree.setRoot(datums.poll());
+            } else {
+                p = (LinkedBinaryTree.BinaryTreeNode) tree.root();
+                insertDatum(datums.poll(), p);
             }
-            while (!datums.isEmpty()) {
-                LinkedBinaryTree.BinaryTreeNode p = null;
-                if (tree.isEmpty()) {
-                    p = (LinkedBinaryTree.BinaryTreeNode) tree.setRoot(datums.poll());
-                } else {
-                    p = (LinkedBinaryTree.BinaryTreeNode) tree.root();
-                    insertDatum(datums.poll(), p);
-                }
-            }
+        }
+    }
+
+    /**
+     * Loads a default tree
+     *
+     * @throws IOException
+     */
+    public void load() throws IOException {
+        load("test75.txt");
+    }
+
+    /**
+     * Trys to load a tree from the given file, if an exception occurs during file
+     * operations, a hardcoded basic tree will be loaded instead.
+     */
+    public void tryLoad(String fileName) throws IOException {
+        try {
+            load(fileName);
         } catch(IOException e) {
             System.out.println("Could not find specified file. Loading hardcoded basic tree instead.");
-            BufferedReader reader = new BufferedReader(new FileReader("test75.txt"));
-            String line;
-            Queue<Datum> datums = new LinkedList<>();
-
-            while ((line = reader.readLine()) != null) {
-                String[] arr = line.split(":");
-                int datumNum = Integer.parseInt(arr[1]);
-                String prompt = arr[3];
-                Datum datum = new Datum(prompt, datumNum);
-                datum.setSide(arr[2]);
-                datums.offer(datum);
-
-            }
-            while (!datums.isEmpty()) {
-                LinkedBinaryTree.BinaryTreeNode p = null;
-                if (tree.isEmpty()) {
-                    p = (LinkedBinaryTree.BinaryTreeNode) tree.setRoot(datums.poll());
-                } else {
-                    p = (LinkedBinaryTree.BinaryTreeNode) tree.root();
-                    insertDatum(datums.poll(), p);
-                }
-            }
+            load();
         }
     }
 
